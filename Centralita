@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+
+class Llamada {
+    public string Origen { get; }
+    public string Destino { get; }
+    public int Duracion { get; }
+
+    public Llamada(string origen, string destino, int duracion) {
+        Origen = origen;
+        Destino = destino;
+        Duracion = duracion;
+    }
+
+    public virtual double CalcularCosto() => 0;
+}
+
+class LlamadaLocal : Llamada {
+    private const double CostoPorSegundo = 0.15;
+
+    public LlamadaLocal(string origen, string destino, int duracion) : base(origen, destino, duracion) {}
+
+    public override double CalcularCosto() => Duracion * CostoPorSegundo;
+}
+
+class LlamadaProvincial : Llamada {
+    private static readonly double[] CostosFranja = { 0.20, 0.25, 0.30 };
+    private int Franja;
+
+    public LlamadaProvincial(string origen, string destino, int duracion, int franja) : base(origen, destino, duracion) {
+        Franja = franja;
+    }
+
+    public override double CalcularCosto() => Duracion * CostosFranja[Franja - 1];
+}
+
+class Centralita {
+    private int totalLlamadas;
+    private double facturacionTotal;
+
+    public void RegistrarLlamada(Llamada llamada) {
+        totalLlamadas++;
+        facturacionTotal += llamada.CalcularCosto();
+        Console.WriteLine($"Llamada registrada: {llamada.Origen} -> {llamada.Destino}, Duración: {llamada.Duracion} segundos, Costo: {llamada.CalcularCosto()} euros");
+    }
+
+    public void MostrarInforme() {
+        Console.WriteLine($"Total de llamadas: {totalLlamadas}");
+        Console.WriteLine($"Facturación total: {facturacionTotal} euros");
+    }
+}
+
+class Practica2 {
+    static void Main(string[] args) {
+        Centralita centralita = new Centralita();
+
+        Llamada llamada1 = new LlamadaLocal("123456789", "987654321", 120);
+        Llamada llamada2 = new LlamadaProvincial("123456789", "654987321", 180, 1);
+        Llamada llamada3 = new LlamadaProvincial("123456789", "321654987", 60, 3);
+
+        centralita.RegistrarLlamada(llamada1);
+        centralita.RegistrarLlamada(llamada2);
+        centralita.RegistrarLlamada(llamada3);
+
+        centralita.MostrarInforme();
+    }
+}
