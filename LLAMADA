@@ -1,0 +1,34 @@
+using System;
+
+class Llamada {
+    public string Origen { get; }
+    public string Destino { get; }
+    public int Duracion { get; }
+
+    public Llamada(string origen, string destino, int duracion) {
+        Origen = origen;
+        Destino = destino;
+        Duracion = duracion;
+    }
+
+    public virtual double CalcularCosto() => 0;
+}
+
+class LlamadaLocal : Llamada {
+    private const double CostoPorSegundo = 0.15;
+
+    public LlamadaLocal(string origen, string destino, int duracion) : base(origen, destino, duracion) {}
+
+    public override double CalcularCosto() => Duracion * CostoPorSegundo;
+}
+
+class LlamadaProvincial : Llamada {
+    private static readonly double[] CostosFranja = { 0.20, 0.25, 0.30 };
+    private int Franja;
+
+    public LlamadaProvincial(string origen, string destino, int duracion, int franja) : base(origen, destino, duracion) {
+        Franja = franja;
+    }
+
+    public override double CalcularCosto() => Duracion * CostosFranja[Franja - 1];
+}
