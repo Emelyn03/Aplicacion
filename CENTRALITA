@@ -1,0 +1,17 @@
+using System;
+
+class Centralita {
+    private int totalLlamadas;
+    private double facturacionTotal;
+
+    public void RegistrarLlamada(Llamada llamada) {
+        totalLlamadas++;
+        facturacionTotal += llamada.CalcularCosto();
+        Console.WriteLine($"Llamada registrada: {llamada.Origen} -> {llamada.Destino}, Duración: {llamada.Duracion} segundos, Costo: {llamada.CalcularCosto()} euros");
+    }
+
+    public void MostrarInforme() {
+        Console.WriteLine($"Total de llamadas: {totalLlamadas}");
+        Console.WriteLine($"Facturación total: {facturacionTotal} euros");
+    }
+}
