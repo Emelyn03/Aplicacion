@@ -1,0 +1,17 @@
+using System;
+
+class Practica2 {
+    static void Main(string[] args) {
+        Centralita centralita = new Centralita();
+
+        Llamada llamada1 = new LlamadaLocal("123456789", "987654321", 120);
+        Llamada llamada2 = new LlamadaProvincial("123456789", "654987321", 180, 1);
+        Llamada llamada3 = new LlamadaProvincial("123456789", "321654987", 60, 3);
+
+        centralita.RegistrarLlamada(llamada1);
+        centralita.RegistrarLlamada(llamada2);
+        centralita.RegistrarLlamada(llamada3);
+
+        centralita.MostrarInforme();
+    }
+}
